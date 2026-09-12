@@ -276,7 +276,7 @@
                                     <button 
                                         key={idx} 
                                         onClick={() => setActiveTab(idx)}
-                                        className={\`flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap transition \${activeTab === idx ? 'bg-primary text-white' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}\`}
+                                        className={`flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap transition ${activeTab === idx ? 'bg-primary text-white' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
                                     >
                                         {plan.category}
                                     </button>
@@ -294,7 +294,7 @@
                                         </div>
                                         <ul className="space-y-4 mb-8 flex-grow">
                                             {plans[activeTab].standard.features.map((feat, i) => (
-                                                <li key={i} className={\`flex items-start text-sm \${feat.incl ? 'text-slate-700' : 'text-slate-400 line-through'}\`}>
+                                                <li key={i} className={`flex items-start text-sm ${feat.incl ? 'text-slate-700' : 'text-slate-400 line-through'}`}>
                                                     {feat.incl ? <CheckIcon /> : <CrossIcon />}
                                                     <span>{feat.text}</span>
                                                 </li>
@@ -357,7 +357,7 @@
                         <div className="max-w-4xl mx-auto">
                             <h2 className="text-3xl font-bold mb-8">Ready to take the next step?</h2>
                             <p className="text-xl mb-4 text-slate-300">{data.founder.name}</p>
-                            <p className="text-lg mb-2 text-slate-400">Email: <a href={\`mailto:\${data.siteSettings.email}\`} className="text-white hover:underline">{data.siteSettings.email}</a></p>
+                            <p className="text-lg mb-2 text-slate-400">Email: <a href={`mailto:${data.siteSettings.email}`} className="text-white hover:underline">{data.siteSettings.email}</a></p>
                             <p className="text-lg mb-8 text-slate-400">Phone: {data.siteSettings.phone}</p>
                             
                             <div className="flex justify-center gap-6">
