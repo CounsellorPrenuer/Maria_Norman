@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maria Norman - Career Guidance & Mentorship</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1d4ed8',
+                        secondary: '#047857',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const PROJECT_ID = "15xh2aku";
+        const DATASET = "production";
+        
+        // Fallback data in case Sanity fetch fails or is empty
+        const defaultData = {
+            homePage: {
+                heroHeading: "EduVista by Dr. Maria Norman",
+                heroDescription: "Building Confident Learners. Creating Future Leaders. We believe every student deserves the right guidance to discover their strengths and build a successful future.",
+                ctaText: "View Packages"
+            },
+            founder: {
+                name: "Dr. Maria Norman",
+                title: "MA (English), B.Ed., M.Sc. Psychology, D.Litt.",
+                biography: "Dr. Maria Norman is an experienced educationist with over 30 years of leadership in reputed schools across India. She is a Principal, Career Counsellor, Educational Consultant and AI Navigator for Mentoria.\n\nShe specialises in career guidance, curriculum planning, school administration and teacher development. Passionate about helping students discover their true potential, she has guided numerous schools in building excellence through innovative educational practices.",
+            },
+            services: [
+                { title: "Career Counselling", description: "Helping students identify interests and aptitude to choose the right academic stream through scientific assessments." },
+                { title: "Curriculum Design", description: "Designing age-appropriate curriculum, lesson plans, and innovative teaching methodologies aligned with educational standards." },
+                { title: "Teacher Training Workshops", description: "Professional development on innovative teaching strategies, classroom management, Bloom's Taxonomy, and NEP practices." },
+                { title: "Model United Nations (MUN)", description: "Organising MUN conferences to enhance leadership, diplomacy, communication and global awareness." },
+                { title: "Personality Development", description: "Developing confidence, communication, leadership, public speaking, interview skills and life skills for students." },
+                { title: "Educational Event Management", description: "Organising Sports Day, Annual Day, Graduation, Cultural Festivals, School Tours, and educational trips." }
+            ],
+            packages: [1,2,3,4,5,6].map(num => ({
+                name: `Package ${num}`,
+                price: "",
+                duration: "",
+                image: `Mentoria${num}.png`,
+                features: ["Comprehensive Mentoria career guidance and counseling to help you reach your goals."]
+            })),
+            siteSettings: {
+                email: "mariya_nrmn@yahoo.co.in",
+                phone: "9597983359",
+                socialLinks: [
+                    { platform: "LinkedIn Profile", url: "https://www.linkedin.com/in/maria-norman-maria-sayers-55ab1a15" },
+                    { platform: "Instagram @MARIA.NORMAN589", url: "https://instagram.com/MARIA.NORMAN589" }
+                ]
+            }
+        };
+
+        function App() {
+            const [data, setData] = useState(defaultData);
+            const [loading, setLoading] = useState(true);
+
+            useEffect(() => {
+                const query = encodeURIComponent(`{
+                    "homePage": *[_type == "homePage"][0],
+                    "founder": *[_type == "founder"][0],
+                    "services": *[_type == "service"] | order(order asc),
+                    "packages": *[_type == "mentoriaPackage"] | order(order asc),
+                    "siteSettings": *[_type == "siteSettings"][0]
+                }`);
+                const url = `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${query}`;
+                
+                fetch(url)
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.result) {
+                            // Merge fetched data with default data where Sanity data is missing
+                            setData(prev => ({
+                                homePage: res.result.homePage || prev.homePage,
+                                founder: res.result.founder || prev.founder,
+                                services: res.result.services?.length ? res.result.services : prev.services,
+                                packages: res.result.packages?.length ? res.result.packages : prev.packages,
+                                siteSettings: res.result.siteSettings || prev.siteSettings
+                            }));
+                        }
+                        setLoading(false);
+                    })
+                    .catch(err => {
+                        console.error("Sanity fetch error:", err);
+                        setLoading(false);
+                    });
+            }, []);
+
+            return (
+                <div>
+                    {/* HEADER */}
+                    <header className="bg-white shadow-sm sticky top-0 z-50">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                            <div className="font-bold text-2xl text-primary flex items-center gap-2">
+                                <img src="logo.jpg" alt="Logo" className="h-8 w-8 object-contain rounded-full" onError={(e) => e.target.style.display='none'} />
+                                Maria Norman
+                            </div>
+                            <nav className="hidden md:flex gap-6">
+                                <a href="#home" className="hover:text-primary transition font-medium">Home</a>
+                                <a href="#about" className="hover:text-primary transition font-medium">About Founder</a>
+                                <a href="#services" className="hover:text-primary transition font-medium">Services</a>
+                                <a href="#packages" className="hover:text-primary transition font-medium">Mentoria Packages</a>
+                                <a href="#testimonials" className="hover:text-primary transition font-medium">Testimonials</a>
+                                <a href="#contact" className="hover:text-primary transition font-medium">Contact Us</a>
+                            </nav>
+                        </div>
+                    </header>
+
+                    {/* HERO SECTION */}
+                    <section id="home" className="bg-primary text-white py-20 px-4 text-center">
+                        <h1 className="text-4xl md:text-6xl font-bold mb-4">{data.homePage.heroHeading}</h1>
+                        <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8">
+                            {data.homePage.heroDescription}
+                        </p>
+                        <a href="#packages" className="bg-white text-primary px-6 py-3 rounded-md font-semibold hover:bg-slate-100 transition inline-block">
+                            {data.homePage.ctaText || "View Packages"}
+                        </a>
+                    </section>
+
+                    {/* ABOUT SECTION */}
+                    <section id="about" className="py-16 px-4 max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
+                        <div className="w-full md:w-1/2">
+                            <img src="founder.jpg" alt={data.founder.name} className="rounded-lg shadow-lg w-full max-w-md mx-auto" />
+                        </div>
+                        <div className="w-full md:w-1/2">
+                            <h2 className="text-3xl font-bold mb-6 text-primary">About {data.founder.name}</h2>
+                            <p className="text-slate-600 font-medium mb-4">{data.founder.title}</p>
+                            <div className="text-slate-700 leading-relaxed whitespace-pre-wrap">
+                                {data.founder.biography}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* SERVICES */}
+                    <section id="services" className="bg-slate-100 py-16 px-4">
+                        <div className="max-w-6xl mx-auto">
+                            <h2 className="text-3xl font-bold text-center mb-10 text-primary">Our Services</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {data.services.map((svc, idx) => (
+                                    <div key={idx} className="bg-white p-6 rounded-lg shadow">
+                                        <h3 className="font-bold text-xl mb-3">{svc.title}</h3>
+                                        <p className="text-slate-600">{svc.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* PACKAGES */}
+                    <section id="packages" className="py-16 px-4 max-w-6xl mx-auto">
+                        <h2 className="text-3xl font-bold text-center mb-10 text-primary">Mentoria Packages</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {data.packages.map((pkg, idx) => (
+                                <div key={idx} className="bg-white rounded-lg overflow-hidden shadow-lg border border-slate-200 flex flex-col">
+                                    <img src={pkg.image} alt={pkg.name} className="w-full h-48 object-cover" />
+                                    <div className="p-6 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <h3 className="font-bold text-xl mb-2">{pkg.name}</h3>
+                                            {pkg.features && pkg.features.map((feat, i) => (
+                                                <p key={i} className="text-slate-600 mb-2">• {feat}</p>
+                                            ))}
+                                        </div>
+                                        <button className="w-full bg-primary text-white py-2 rounded font-medium hover:bg-blue-700 transition mt-4">
+                                            Learn More
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* TESTIMONIALS */}
+                    <section id="testimonials" className="bg-slate-100 py-16 px-4">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h2 className="text-3xl font-bold mb-10 text-primary">Success Stories</h2>
+                            <div className="bg-white p-8 rounded-lg shadow text-left">
+                                <ul className="list-disc pl-5 space-y-3 text-slate-700">
+                                    <li>Successfully guided students in selecting suitable careers through psychometric assessments.</li>
+                                    <li>Conducted career counselling programmes helping students make informed academic decisions.</li>
+                                    <li>Organised major school events including Sports Day, Graduation Day, Cultural Festivals and Inter-School Competitions.</li>
+                                    <li>Delivered teacher training workshops on innovative teaching methodologies.</li>
+                                    <li>Conducted student workshops on English Literature, Time Management and Personality Development.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* CONTACT */}
+                    <section id="contact" className="py-16 px-4 max-w-4xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold mb-8 text-primary">Contact Us</h2>
+                        <p className="text-lg mb-2 font-medium">{data.founder.name}</p>
+                        <p className="text-slate-600 mb-2">Email: {data.siteSettings.email}</p>
+                        <p className="text-slate-600 mb-6">Phone: {data.siteSettings.phone}</p>
+                        <div className="flex justify-center gap-4 mt-6">
+                            {data.siteSettings.socialLinks && data.siteSettings.socialLinks.map((link, idx) => (
+                                <a key={idx} href={link.url} target="_blank" rel="noreferrer" className="text-primary font-medium hover:underline">
+                                    {link.platform}
+                                </a>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* FOOTER */}
+                    <footer className="bg-slate-900 text-white py-12 text-center">
+                        <p>© 2026 {data.siteSettings.siteName || data.founder.name}. All rights reserved.</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
