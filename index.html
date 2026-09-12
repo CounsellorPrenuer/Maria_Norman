@@ -11,8 +11,9 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1d4ed8',
-                        secondary: '#047857',
+                        primary: '#3b5ee6', // Matched Mentoria Blue
+                        secondary: '#2546bd',
+                        accent: '#ffcc00' // Mentoria yellow
                     }
                 }
             }
@@ -37,7 +38,109 @@
         const PROJECT_ID = "15xh2aku";
         const DATASET = "production";
         
-        // Fallback data in case Sanity fetch fails or is empty
+        // Exact Mentoria Plans transcribed
+        const plans = [
+            {
+                category: "8-9 STUDENTS",
+                standard: { name: "Discover", price: "5,500", features: [
+                    {text: "Psychometric assessment to measure your interests", incl: true},
+                    {text: "1 career counselling session with expert coaches", incl: true},
+                    {text: "Lifetime access to Knowledge Gateway", incl: true},
+                    {text: "Invites to live webinars by industry experts", incl: true},
+                    {text: "Customised reports after each session", incl: false},
+                    {text: "Guidance on studying abroad", incl: false},
+                    {text: "CV building during internships/graduation", incl: false}
+                ]},
+                premium: { name: "Discover plus+", price: "15,000", features: [
+                    {text: "Psychometric assessment to measure interests, personality", incl: true},
+                    {text: "8 career counselling sessions (1 every year) until graduation", incl: true},
+                    {text: "Lifetime access to Knowledge Gateway", incl: true},
+                    {text: "Invites to live webinars by industry experts", incl: true},
+                    {text: "Customised reports after each session", incl: true},
+                    {text: "Guidance on studying abroad", incl: true},
+                    {text: "CV building during internships/graduation", incl: true}
+                ]}
+            },
+            {
+                category: "10-12 STUDENTS",
+                standard: { name: "Achieve Online", price: "5,999", features: [
+                    {text: "Psychometric assessment to measure interests & personality", incl: true},
+                    {text: "1 career counselling session", incl: true},
+                    {text: "Lifetime access to Knowledge Gateway", incl: true},
+                    {text: "Pre-recorded webinars by industry experts", incl: true},
+                    {text: "Customised reports after each session", incl: false},
+                    {text: "Guidance on studying abroad", incl: false},
+                    {text: "CV reviews during internships", incl: false}
+                ]},
+                premium: { name: "Achieve Plus+", price: "10,599", features: [
+                    {text: "Psychometric assessment to measure interests & personality", incl: true},
+                    {text: "4 career counselling sessions", incl: true},
+                    {text: "Lifetime access to Knowledge Gateway", incl: true},
+                    {text: "Attend live webinars by industry experts", incl: true},
+                    {text: "Customised reports after each session", incl: true},
+                    {text: "Guidance on studying abroad", incl: true},
+                    {text: "CV reviews during internships", incl: true}
+                ]}
+            },
+            {
+                category: "COLLEGE GRADUATES",
+                standard: { name: "Ascend Online", price: "6,499", features: [
+                    {text: "Psychometric assessment to measure interests & personality", incl: true},
+                    {text: "1 career counselling session", incl: true},
+                    {text: "Lifetime access to Knowledge Gateway", incl: true},
+                    {text: "Pre-recorded webinars by industry experts", incl: true},
+                    {text: "Customised reports after each session", incl: false},
+                    {text: "Guidance on studying abroad", incl: false},
+                    {text: "CV reviews for job application", incl: false}
+                ]},
+                premium: { name: "Ascend Plus+", price: "10,599", features: [
+                    {text: "Psychometric assessment to measure interests & personality", incl: true},
+                    {text: "3 career counselling sessions", incl: true},
+                    {text: "Lifetime access to Knowledge Gateway", incl: true},
+                    {text: "Attend live webinars by industry experts", incl: true},
+                    {text: "Customised reports after each session", incl: true},
+                    {text: "Guidance on studying abroad", incl: true},
+                    {text: "CV reviews for job application", incl: true}
+                ]}
+            },
+            {
+                category: "WORKING PROFESSIONALS",
+                standard: { name: "Ascend Online", price: "6,499", features: [
+                    {text: "Psychometric assessment to measure interests & personality", incl: true},
+                    {text: "1 career counselling session", incl: true},
+                    {text: "Lifetime access to Knowledge Gateway", incl: true},
+                    {text: "Pre-recorded webinars by industry experts", incl: true},
+                    {text: "Customised reports after each session", incl: false},
+                    {text: "Guidance on studying abroad", incl: false},
+                    {text: "CV reviews for job application", incl: false}
+                ]},
+                premium: { name: "Ascend Plus+", price: "10,599", features: [
+                    {text: "Psychometric assessment to measure interests & personality", incl: true},
+                    {text: "3 career counselling sessions", incl: true},
+                    {text: "Lifetime access to Knowledge Gateway", incl: true},
+                    {text: "Attend live webinars by industry experts", incl: true},
+                    {text: "Customised reports after each session", incl: true},
+                    {text: "Guidance on studying abroad", incl: true},
+                    {text: "CV reviews for job application", incl: true}
+                ]}
+            }
+        ];
+
+        const customPlans = [
+            { name: "CV Building", price: "2000", desc: "Is your CV making a great first impression? Our HR experts will help you build a standout CV." },
+            { name: "LinkedIn Profile Building", price: "2000", desc: "Revamp your LinkedIn profile with recommendations from recruitment experts to increase interview calls." },
+            { name: "LinkedIn Profile + CV Building", price: "3500", desc: "Build the kind of profile recruiters would love to spend time on." },
+            { name: "Job Application Strategy", price: "4000", desc: "Build the right pipeline for job interviews through a customised job application tracker." },
+            { name: "Career Report", price: "2500", desc: "Get a detailed report of your psychometric assessment for a scientific analysis." },
+            { name: "Career Report + Career Counselling", price: "4000", desc: "Connect with top career coaches to analyse your report and get an action plan." },
+            { name: "Knowledge Gateway + Career Helpline", price: "250/month", desc: "Unlock holistic information and get direct access to experts for career queries." },
+            { name: "One-to-One Session with Expert", price: "3500/hr", desc: "Resolve queries and glimpse into your future world through a 1-on-1 session." },
+            { name: "Overseas Admission Planner", price: "3000", desc: "Planning masters studies? Get unbiased recommendations and details on future options." },
+            { name: "Overseas Admission: SOP Brainstorm", price: "3000", desc: "Increase chances of getting admissions by structuring your SOP in the ideal manner." },
+            { name: "Overseas Admission: SOP Review", price: "2500", desc: "Is your SOP good enough? Get it reviewed by our team of overseas admissions experts." },
+            { name: "Interview Prep Session", price: "2000", desc: "Ace your upcoming interviews with guidance from top HR experts." }
+        ];
+
         const defaultData = {
             homePage: {
                 heroHeading: "EduVista by Dr. Maria Norman",
@@ -47,23 +150,16 @@
             founder: {
                 name: "Dr. Maria Norman",
                 title: "MA (English), B.Ed., M.Sc. Psychology, D.Litt.",
-                biography: "Dr. Maria Norman is an experienced educationist with over 30 years of leadership in reputed schools across India. She is a Principal, Career Counsellor, Educational Consultant and AI Navigator for Mentoria.\n\nShe specialises in career guidance, curriculum planning, school administration and teacher development. Passionate about helping students discover their true potential, she has guided numerous schools in building excellence through innovative educational practices.",
+                biography: "Dr. Maria Norman is an experienced educationist with over 30 years of leadership in reputed schools across India. She is a Principal, Career Counsellor, Educational Consultant and AI Navigator for Mentoria.\n\nShe specialises in career guidance, curriculum planning, school administration and teacher development.",
             },
             services: [
-                { title: "Career Counselling", description: "Helping students identify interests and aptitude to choose the right academic stream through scientific assessments." },
-                { title: "Curriculum Design", description: "Designing age-appropriate curriculum, lesson plans, and innovative teaching methodologies aligned with educational standards." },
-                { title: "Teacher Training Workshops", description: "Professional development on innovative teaching strategies, classroom management, Bloom's Taxonomy, and NEP practices." },
-                { title: "Model United Nations (MUN)", description: "Organising MUN conferences to enhance leadership, diplomacy, communication and global awareness." },
-                { title: "Personality Development", description: "Developing confidence, communication, leadership, public speaking, interview skills and life skills for students." },
-                { title: "Educational Event Management", description: "Organising Sports Day, Annual Day, Graduation, Cultural Festivals, School Tours, and educational trips." }
+                { title: "Career Counselling", description: "Helping students identify interests and aptitude to choose the right academic stream." },
+                { title: "Curriculum Design", description: "Designing age-appropriate curriculum, lesson plans, and innovative teaching methodologies." },
+                { title: "Teacher Training Workshops", description: "Professional development on innovative teaching strategies, Bloom's Taxonomy, and NEP." },
+                { title: "Model United Nations (MUN)", description: "Organising MUN conferences to enhance leadership, diplomacy, communication." },
+                { title: "Personality Development", description: "Developing confidence, communication, leadership, public speaking for students." },
+                { title: "Educational Event Management", description: "Organising Sports Day, Annual Day, Graduation, Cultural Festivals, School Tours." }
             ],
-            packages: [1,2,3,4,5,6].map(num => ({
-                name: `Package ${num}`,
-                price: "",
-                duration: "",
-                image: `Mentoria${num}.png`,
-                features: ["Comprehensive Mentoria career guidance and counseling to help you reach your goals."]
-            })),
             siteSettings: {
                 email: "mariya_nrmn@yahoo.co.in",
                 phone: "9597983359",
@@ -74,16 +170,22 @@
             }
         };
 
+        const CheckIcon = () => (
+            <svg className="w-5 h-5 text-primary flex-shrink-0 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+        );
+        const CrossIcon = () => (
+            <svg className="w-5 h-5 text-slate-300 flex-shrink-0 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        );
+
         function App() {
             const [data, setData] = useState(defaultData);
-            const [loading, setLoading] = useState(true);
+            const [activeTab, setActiveTab] = useState(0);
 
             useEffect(() => {
                 const query = encodeURIComponent(`{
                     "homePage": *[_type == "homePage"][0],
                     "founder": *[_type == "founder"][0],
                     "services": *[_type == "service"] | order(order asc),
-                    "packages": *[_type == "mentoriaPackage"] | order(order asc),
                     "siteSettings": *[_type == "siteSettings"][0]
                 }`);
                 const url = `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${query}`;
@@ -92,21 +194,15 @@
                     .then(res => res.json())
                     .then(res => {
                         if (res.result) {
-                            // Merge fetched data with default data where Sanity data is missing
                             setData(prev => ({
                                 homePage: res.result.homePage || prev.homePage,
                                 founder: res.result.founder || prev.founder,
                                 services: res.result.services?.length ? res.result.services : prev.services,
-                                packages: res.result.packages?.length ? res.result.packages : prev.packages,
                                 siteSettings: res.result.siteSettings || prev.siteSettings
                             }));
                         }
-                        setLoading(false);
                     })
-                    .catch(err => {
-                        console.error("Sanity fetch error:", err);
-                        setLoading(false);
-                    });
+                    .catch(err => console.error("Sanity fetch error:", err));
             }, []);
 
             return (
@@ -123,7 +219,6 @@
                                 <a href="#about" className="hover:text-primary transition font-medium">About Founder</a>
                                 <a href="#services" className="hover:text-primary transition font-medium">Services</a>
                                 <a href="#packages" className="hover:text-primary transition font-medium">Mentoria Packages</a>
-                                <a href="#testimonials" className="hover:text-primary transition font-medium">Testimonials</a>
                                 <a href="#contact" className="hover:text-primary transition font-medium">Contact Us</a>
                             </nav>
                         </div>
@@ -135,97 +230,149 @@
                         <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8">
                             {data.homePage.heroDescription}
                         </p>
-                        <a href="#packages" className="bg-white text-primary px-6 py-3 rounded-md font-semibold hover:bg-slate-100 transition inline-block">
+                        <a href="#packages" className="bg-white text-primary px-6 py-3 rounded-full font-bold hover:bg-slate-100 transition shadow-lg">
                             {data.homePage.ctaText || "View Packages"}
                         </a>
                     </section>
 
                     {/* ABOUT SECTION */}
                     <section id="about" className="py-16 px-4 max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
-                        <div className="w-full md:w-1/2">
-                            <img src="founder.jpg" alt={data.founder.name} className="rounded-lg shadow-lg w-full max-w-md mx-auto" />
+                        <div className="w-full md:w-1/3">
+                            <img src="founder.jpg" alt={data.founder.name} className="rounded-2xl shadow-xl border-4 border-white mx-auto" />
                         </div>
-                        <div className="w-full md:w-1/2">
-                            <h2 className="text-3xl font-bold mb-6 text-primary">About {data.founder.name}</h2>
-                            <p className="text-slate-600 font-medium mb-4">{data.founder.title}</p>
-                            <div className="text-slate-700 leading-relaxed whitespace-pre-wrap">
+                        <div className="w-full md:w-2/3">
+                            <h2 className="text-3xl font-bold mb-2 text-slate-800">About {data.founder.name}</h2>
+                            <p className="text-primary font-semibold mb-6">{data.founder.title}</p>
+                            <div className="text-slate-600 leading-relaxed whitespace-pre-wrap text-lg">
                                 {data.founder.biography}
                             </div>
                         </div>
                     </section>
 
                     {/* SERVICES */}
-                    <section id="services" className="bg-slate-100 py-16 px-4">
+                    <section id="services" className="bg-slate-100 py-20 px-4">
                         <div className="max-w-6xl mx-auto">
-                            <h2 className="text-3xl font-bold text-center mb-10 text-primary">Our Services</h2>
+                            <h2 className="text-3xl font-bold text-center mb-12 text-slate-800">Our Services</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {data.services.map((svc, idx) => (
-                                    <div key={idx} className="bg-white p-6 rounded-lg shadow">
-                                        <h3 className="font-bold text-xl mb-3">{svc.title}</h3>
-                                        <p className="text-slate-600">{svc.description}</p>
+                                    <div key={idx} className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition border border-slate-100">
+                                        <h3 className="font-bold text-xl mb-3 text-primary">{svc.title}</h3>
+                                        <p className="text-slate-600 leading-relaxed">{svc.description}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
                     </section>
 
-                    {/* PACKAGES */}
-                    <section id="packages" className="py-16 px-4 max-w-6xl mx-auto">
-                        <h2 className="text-3xl font-bold text-center mb-10 text-primary">Mentoria Packages</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {data.packages.map((pkg, idx) => (
-                                <div key={idx} className="bg-white rounded-lg overflow-hidden shadow-lg border border-slate-200 flex flex-col">
-                                    <img src={pkg.image} alt={pkg.name} className="w-full h-48 object-cover" />
-                                    <div className="p-6 flex-grow flex flex-col justify-between">
-                                        <div>
-                                            <h3 className="font-bold text-xl mb-2">{pkg.name}</h3>
-                                            {pkg.features && pkg.features.map((feat, i) => (
-                                                <p key={i} className="text-slate-600 mb-2">• {feat}</p>
-                                            ))}
+                    {/* FULL MENTORIA PACKAGES REPLICA */}
+                    <section id="packages" className="py-20 px-4 max-w-6xl mx-auto">
+                        <h2 className="text-4xl font-extrabold text-center mb-4 text-primary">Mentoria Packages</h2>
+                        <p className="text-center text-slate-600 mb-12 max-w-2xl mx-auto">Choose the perfect mentorship plan designed specifically for your career stage.</p>
+                        
+                        {/* Core Plans */}
+                        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 mb-20">
+                            <div className="flex border-b overflow-x-auto">
+                                {plans.map((plan, idx) => (
+                                    <button 
+                                        key={idx} 
+                                        onClick={() => setActiveTab(idx)}
+                                        className={\`flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap transition \${activeTab === idx ? 'bg-primary text-white' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}\`}
+                                    >
+                                        {plan.category}
+                                    </button>
+                                ))}
+                            </div>
+                            
+                            <div className="p-8 md:p-12 bg-slate-50">
+                                <div className="grid md:grid-cols-2 gap-8">
+                                    {/* STANDARD CARD */}
+                                    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex flex-col">
+                                        <div className="mb-6">
+                                            <p className="text-sm font-semibold text-slate-400 tracking-wider mb-1">STANDARD</p>
+                                            <h3 className="text-2xl font-bold text-primary mb-2">{plans[activeTab].standard.name}</h3>
+                                            <div className="text-3xl font-extrabold text-slate-800">₹ {plans[activeTab].standard.price}</div>
                                         </div>
-                                        <button className="w-full bg-primary text-white py-2 rounded font-medium hover:bg-blue-700 transition mt-4">
-                                            Learn More
+                                        <ul className="space-y-4 mb-8 flex-grow">
+                                            {plans[activeTab].standard.features.map((feat, i) => (
+                                                <li key={i} className={\`flex items-start text-sm \${feat.incl ? 'text-slate-700' : 'text-slate-400 line-through'}\`}>
+                                                    {feat.incl ? <CheckIcon /> : <CrossIcon />}
+                                                    <span>{feat.text}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <button className="w-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition py-3 rounded-full font-bold">
+                                            BUY NOW
+                                        </button>
+                                    </div>
+
+                                    {/* PREMIUM CARD */}
+                                    <div className="bg-white rounded-2xl shadow-xl border-2 border-primary p-8 flex flex-col relative transform md:-translate-y-4">
+                                        <div className="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-xl">RECOMMENDED</div>
+                                        <div className="mb-6">
+                                            <p className="text-sm font-semibold text-primary tracking-wider mb-1">PREMIUM</p>
+                                            <h3 className="text-2xl font-bold text-primary mb-2">{plans[activeTab].premium.name}</h3>
+                                            <div className="text-3xl font-extrabold text-slate-800">₹ {plans[activeTab].premium.price}</div>
+                                        </div>
+                                        <ul className="space-y-4 mb-8 flex-grow">
+                                            {plans[activeTab].premium.features.map((feat, i) => (
+                                                <li key={i} className="flex items-start text-sm text-slate-700">
+                                                    <CheckIcon />
+                                                    <span>{feat.text}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <button className="w-full bg-primary text-white hover:bg-secondary transition py-3 rounded-full font-bold shadow-lg">
+                                            BUY NOW
                                         </button>
                                     </div>
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                    </section>
 
-                    {/* TESTIMONIALS */}
-                    <section id="testimonials" className="bg-slate-100 py-16 px-4">
-                        <div className="max-w-4xl mx-auto text-center">
-                            <h2 className="text-3xl font-bold mb-10 text-primary">Success Stories</h2>
-                            <div className="bg-white p-8 rounded-lg shadow text-left">
-                                <ul className="list-disc pl-5 space-y-3 text-slate-700">
-                                    <li>Successfully guided students in selecting suitable careers through psychometric assessments.</li>
-                                    <li>Conducted career counselling programmes helping students make informed academic decisions.</li>
-                                    <li>Organised major school events including Sports Day, Graduation Day, Cultural Festivals and Inter-School Competitions.</li>
-                                    <li>Delivered teacher training workshops on innovative teaching methodologies.</li>
-                                    <li>Conducted student workshops on English Literature, Time Management and Personality Development.</li>
-                                </ul>
+                        {/* Customise Your Mentorship Plan (Mentoria 5 & 6) */}
+                        <div className="mt-20">
+                            <h3 className="text-3xl font-bold text-center mb-4 text-slate-800">Customise Your Mentorship Plan</h3>
+                            <p className="text-center text-slate-600 mb-12 max-w-2xl mx-auto">
+                                If you want to subscribe to specific services from Mentoria that resolve your career challenges, you can choose one or more of the following:
+                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {customPlans.map((plan, idx) => (
+                                    <div key={idx} className="bg-white rounded-xl shadow border border-slate-200 p-6 flex flex-col hover:shadow-lg transition">
+                                        <div className="flex-grow">
+                                            <h4 className="font-bold text-lg text-primary mb-1">{plan.name}</h4>
+                                            <p className="font-extrabold text-slate-800 mb-3">₹{plan.price}</p>
+                                            <p className="text-sm text-slate-600 leading-relaxed">{plan.desc}</p>
+                                        </div>
+                                        <button className="w-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition py-2 rounded-lg font-bold mt-6 text-sm">
+                                            BUY NOW
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </section>
 
                     {/* CONTACT */}
-                    <section id="contact" className="py-16 px-4 max-w-4xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold mb-8 text-primary">Contact Us</h2>
-                        <p className="text-lg mb-2 font-medium">{data.founder.name}</p>
-                        <p className="text-slate-600 mb-2">Email: {data.siteSettings.email}</p>
-                        <p className="text-slate-600 mb-6">Phone: {data.siteSettings.phone}</p>
-                        <div className="flex justify-center gap-4 mt-6">
-                            {data.siteSettings.socialLinks && data.siteSettings.socialLinks.map((link, idx) => (
-                                <a key={idx} href={link.url} target="_blank" rel="noreferrer" className="text-primary font-medium hover:underline">
-                                    {link.platform}
-                                </a>
-                            ))}
+                    <section id="contact" className="py-20 px-4 bg-slate-900 text-white text-center">
+                        <div className="max-w-4xl mx-auto">
+                            <h2 className="text-3xl font-bold mb-8">Ready to take the next step?</h2>
+                            <p className="text-xl mb-4 text-slate-300">{data.founder.name}</p>
+                            <p className="text-lg mb-2 text-slate-400">Email: <a href={\`mailto:\${data.siteSettings.email}\`} className="text-white hover:underline">{data.siteSettings.email}</a></p>
+                            <p className="text-lg mb-8 text-slate-400">Phone: {data.siteSettings.phone}</p>
+                            
+                            <div className="flex justify-center gap-6">
+                                {data.siteSettings.socialLinks && data.siteSettings.socialLinks.map((link, idx) => (
+                                    <a key={idx} href={link.url} target="_blank" rel="noreferrer" className="bg-white/10 hover:bg-white/20 transition px-6 py-3 rounded-full font-medium">
+                                        {link.platform}
+                                    </a>
+                                ))}
+                            </div>
                         </div>
                     </section>
 
                     {/* FOOTER */}
-                    <footer className="bg-slate-900 text-white py-12 text-center">
-                        <p>© 2026 {data.siteSettings.siteName || data.founder.name}. All rights reserved.</p>
+                    <footer className="bg-black text-slate-500 py-8 text-center text-sm">
+                        <p>© 2026 {data.founder.name}. All rights reserved.</p>
                     </footer>
                 </div>
             );
